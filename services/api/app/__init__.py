@@ -1,0 +1,2 @@
+"""Resume generation API package."""
+

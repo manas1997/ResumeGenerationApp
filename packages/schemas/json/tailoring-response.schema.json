@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://resume-generation-app.local/schemas/tailoring-response.schema.json",
+  "title": "TailoringResponse",
+  "type": "object",
+  "required": [
+    "run_id",
+    "parsed_resume",
+    "parsed_job_description",
+    "tailored_resume",
+    "scorecard",
+    "comparison"
+  ],
+  "properties": {
+    "run_id": { "type": "string" },
+    "parsed_resume": { "type": "object" },
+    "parsed_job_description": { "type": "object" },
+    "tailored_resume": { "type": "object" },
+    "scorecard": { "type": "object" },
+    "comparison": {
+      "type": "array",
+      "items": { "type": "object" }
+    }
+  }
+}
+
