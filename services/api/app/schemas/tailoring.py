@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 
+from app.schemas.ats import AtsAnalysisDashboard
 from app.schemas.job_description import ParsedJobDescription
 from app.schemas.resume import ParsedResume, TailoredResume
 from app.schemas.scorecard import Scorecard
@@ -31,6 +32,14 @@ class ChangeExplanation(BaseModel):
     ats_benefit: str
 
 
+class OutputAssetLinks(BaseModel):
+    tailored_resume_pdf_url: str | None = None
+    original_resume_pdf_url: str | None = None
+    ats_report_pdf_url: str | None = None
+    tailored_page_count: int | None = None
+    original_page_count: int | None = None
+
+
 class TailoringRequest(BaseModel):
     source_resume: SourceResumeInput
     job_description: JobDescriptionInput
@@ -43,5 +52,6 @@ class TailoringResponse(BaseModel):
     parsed_job_description: ParsedJobDescription
     tailored_resume: TailoredResume
     scorecard: Scorecard
+    ats_analysis: AtsAnalysisDashboard
     comparison: list[ChangeExplanation]
-
+    output_assets: OutputAssetLinks = Field(default_factory=OutputAssetLinks)

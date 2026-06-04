@@ -4,6 +4,7 @@ from fastapi import APIRouter, HTTPException
 
 from app.core.config import settings
 from app.schemas.tailoring import TailoringRequest, TailoringResponse
+from app.services.ats_analysis import build_ats_analysis
 from app.services.jd_parser import parse_job_description
 from app.services.resume_parser import parse_resume_text
 from app.services.scoring import compute_scorecard
@@ -29,6 +30,7 @@ def create_tailoring_run(request: TailoringRequest) -> TailoringResponse:
     parsed_resume = parse_resume_text(resume_text)
     parsed_jd = parse_job_description(jd_text)
     scorecard = compute_scorecard(parsed_resume, parsed_jd)
+    ats_analysis = build_ats_analysis(parsed_resume, parsed_jd, scorecard)
     tailored = tailor_resume(parsed_resume, parsed_jd, request.preferences, scorecard)
 
     return TailoringResponse(
@@ -37,6 +39,6 @@ def create_tailoring_run(request: TailoringRequest) -> TailoringResponse:
         parsed_job_description=parsed_jd,
         tailored_resume=tailored.resume,
         scorecard=scorecard,
+        ats_analysis=ats_analysis,
         comparison=tailored.comparison,
     )
-

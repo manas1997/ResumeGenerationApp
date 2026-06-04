@@ -17,8 +17,11 @@ class Scorecard(BaseModel):
     semantic_alignment_score: float = Field(ge=0, le=100)
     ats_compatibility_score: float = Field(ge=0, le=100)
     recruiter_readability_score: float = Field(ge=0, le=100)
+    technical_skill_match_score: float = Field(default=0, ge=0, le=100)
+    experience_match_score: float = Field(default=0, ge=0, le=100)
+    leadership_match_score: float = Field(default=0, ge=0, le=100)
+    domain_match_score: float = Field(default=0, ge=0, le=100)
     compatibility_confidence: str
     matched_keywords: list[str] = Field(default_factory=list)
     missing_keywords: list[MissingKeyword] = Field(default_factory=list)
     improvement_recommendations: list[str] = Field(default_factory=list)
-

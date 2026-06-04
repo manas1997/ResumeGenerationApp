@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://resume-generation-app.local/schemas/ats-analysis-dashboard.schema.json",
+  "title": "AtsAnalysisDashboard",
+  "type": "object",
+  "required": [
+    "ats_compatibility_score",
+    "keyword_match_score",
+    "technical_skill_match",
+    "experience_match",
+    "leadership_match",
+    "domain_match",
+    "keyword_analysis",
+    "missing_skills",
+    "weakly_demonstrated_skills",
+    "strongly_demonstrated_skills",
+    "experience_gaps",
+    "compatibility_checks",
+    "strengths",
+    "gaps",
+    "recommendations",
+    "skill_improvement_report"
+  ],
+  "properties": {
+    "ats_compatibility_score": { "type": "number", "minimum": 0, "maximum": 100 },
+    "keyword_match_score": { "type": "number", "minimum": 0, "maximum": 100 },
+    "technical_skill_match": { "type": "number", "minimum": 0, "maximum": 100 },
+    "experience_match": { "type": "number", "minimum": 0, "maximum": 100 },
+    "leadership_match": { "type": "number", "minimum": 0, "maximum": 100 },
+    "domain_match": { "type": "number", "minimum": 0, "maximum": 100 },
+    "keyword_analysis": { "type": "object" },
+    "missing_skills": { "type": "array", "items": { "type": "object" } },
+    "weakly_demonstrated_skills": { "type": "array", "items": { "type": "object" } },
+    "strongly_demonstrated_skills": { "type": "array", "items": { "type": "object" } },
+    "experience_gaps": { "type": "array", "items": { "type": "object" } },
+    "compatibility_checks": { "type": "array", "items": { "type": "object" } },
+    "strengths": { "type": "array", "items": { "type": "string" } },
+    "gaps": { "type": "array", "items": { "type": "string" } },
+    "recommendations": { "type": "array", "items": { "type": "string" } },
+    "skill_improvement_report": { "type": "object" }
+  }
+}
+

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://resume-generation-app.local/schemas/template-fidelity-report.schema.json",
+  "title": "TemplateFidelityReport",
+  "type": "object",
+  "required": [
+    "overall_score",
+    "font_score",
+    "margin_score",
+    "spacing_score",
+    "position_score",
+    "page_structure_score",
+    "passed",
+    "threshold",
+    "violations"
+  ],
+  "properties": {
+    "overall_score": { "type": "number", "minimum": 0, "maximum": 100 },
+    "font_score": { "type": "number", "minimum": 0, "maximum": 100 },
+    "margin_score": { "type": "number", "minimum": 0, "maximum": 100 },
+    "spacing_score": { "type": "number", "minimum": 0, "maximum": 100 },
+    "position_score": { "type": "number", "minimum": 0, "maximum": 100 },
+    "page_structure_score": { "type": "number", "minimum": 0, "maximum": 100 },
+    "passed": { "type": "boolean" },
+    "threshold": { "type": "number", "minimum": 99, "maximum": 100 },
+    "violations": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}
+

@@ -18,6 +18,7 @@ def compute_scorecard(resume: ParsedResume, jd: ParsedJobDescription) -> Scoreca
     semantic_score = _semantic_score(resume, jd)
     ats_score = _ats_score(resume)
     readability_score = _readability_score(resume)
+    domain_score = _domain_score(resume, jd)
 
     recommendations: list[str] = []
     if missing:
@@ -34,6 +35,10 @@ def compute_scorecard(resume: ParsedResume, jd: ParsedJobDescription) -> Scoreca
         semantic_alignment_score=round(semantic_score, 2),
         ats_compatibility_score=round(ats_score, 2),
         recruiter_readability_score=round(readability_score, 2),
+        technical_skill_match_score=round(keyword_score, 2),
+        experience_match_score=round(semantic_score, 2),
+        leadership_match_score=round(_leadership_score(resume, jd), 2),
+        domain_match_score=round(domain_score, 2),
         compatibility_confidence=_confidence(keyword_score, semantic_score, ats_score, readability_score),
         matched_keywords=matched,
         missing_keywords=[
@@ -71,13 +76,13 @@ def _semantic_score(resume: ParsedResume, jd: ParsedJobDescription) -> float:
     if not resume.claims or not jd.requirements:
         return 0.0
 
+    evidence_claims = [claim for claim in resume.claims if claim.claim_type != "skill"] or resume.claims
     per_requirement: list[float] = []
     for requirement in jd.requirements[:30]:
         best = max(
             jaccard_similarity(requirement.text, claim.text)
-            for claim in resume.claims
-            if claim.claim_type != "skill"
-        ) if resume.claims else 0.0
+            for claim in evidence_claims
+        )
         per_requirement.append(best)
 
     return min(mean(per_requirement) * 250, 100) if per_requirement else 0.0
@@ -105,6 +110,24 @@ def _readability_score(resume: ParsedResume) -> float:
     return min(concise_score + metric_score, 100)
 
 
+def _leadership_score(resume: ParsedResume, jd: ParsedJobDescription) -> float:
+    leadership_terms = {"lead", "led", "mentor", "owned", "strategy", "stakeholder", "team"}
+    jd_text = " ".join(jd.seniority_signals + jd.role_expectations).lower()
+    if not any(term in jd_text for term in leadership_terms):
+        return 100.0
+    resume_text = resume.raw_text.lower()
+    matched = [term for term in leadership_terms if term in resume_text]
+    return min(len(matched) / 3 * 100, 100)
+
+
+def _domain_score(resume: ParsedResume, jd: ParsedJobDescription) -> float:
+    if not jd.domain_keywords:
+        return 100.0
+    resume_text = resume.raw_text.lower()
+    matched = [keyword for keyword in jd.domain_keywords if keyword in resume_text]
+    return len(matched) / len(jd.domain_keywords) * 100
+
+
 def _confidence(*scores: float) -> str:
     average = mean(scores)
     if average >= 85:
@@ -112,4 +135,3 @@ def _confidence(*scores: float) -> str:
     if average >= 65:
         return "medium"
     return "low"
-

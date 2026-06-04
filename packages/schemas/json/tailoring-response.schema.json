@@ -9,6 +9,7 @@
     "parsed_job_description",
     "tailored_resume",
     "scorecard",
+    "ats_analysis",
     "comparison"
   ],
   "properties": {
@@ -17,10 +18,11 @@
     "parsed_job_description": { "type": "object" },
     "tailored_resume": { "type": "object" },
     "scorecard": { "type": "object" },
+    "ats_analysis": { "type": "object" },
     "comparison": {
       "type": "array",
       "items": { "type": "object" }
-    }
+    },
+    "output_assets": { "type": "object" }
   }
 }
-
