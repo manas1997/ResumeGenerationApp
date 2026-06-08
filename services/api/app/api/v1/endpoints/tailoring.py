@@ -2,6 +2,7 @@ from uuid import uuid4
 
 from fastapi import APIRouter, HTTPException
 
+from app.ai.providers import get_ai_provider
 from app.core.config import settings
 from app.schemas.tailoring import TailoringRequest, TailoringResponse
 from app.services.ats_analysis import build_ats_analysis
@@ -31,7 +32,13 @@ def create_tailoring_run(request: TailoringRequest) -> TailoringResponse:
     parsed_jd = parse_job_description(jd_text)
     scorecard = compute_scorecard(parsed_resume, parsed_jd)
     ats_analysis = build_ats_analysis(parsed_resume, parsed_jd, scorecard)
-    tailored = tailor_resume(parsed_resume, parsed_jd, request.preferences, scorecard)
+    tailored = tailor_resume(
+        parsed_resume,
+        parsed_jd,
+        request.preferences,
+        scorecard,
+        ai_provider=get_ai_provider(),
+    )
 
     return TailoringResponse(
         run_id=str(uuid4()),

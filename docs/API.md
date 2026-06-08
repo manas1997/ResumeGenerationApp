@@ -105,3 +105,17 @@ The dashboard separates:
 - Skill improvement recommendations.
 
 Skill improvement recommendations must never claim the user does not know a skill. They must speak only about evidence currently demonstrated in the resume.
+
+## OpenAI Configuration
+
+AI rewriting is enabled through environment variables:
+
+```bash
+RESUME_APP_ENABLE_AI_REWRITING=true
+RESUME_APP_OPENAI_API_KEY=sk-...
+RESUME_APP_OPENAI_MODEL=gpt-4o-mini
+RESUME_APP_OPENAI_TIMEOUT_SECONDS=30
+RESUME_APP_OPENAI_MAX_RETRIES=2
+```
+
+If `RESUME_APP_OPENAI_API_KEY` is empty, tailoring still works with deterministic rewriting.

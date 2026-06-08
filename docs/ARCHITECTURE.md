@@ -29,7 +29,8 @@ flowchart LR
 - `services/api/app/services/template_preserving_renderer.py`: Performs text-only PDF replacement and blocks low-fidelity output.
 - `services/api/app/services/ats_analysis.py`: Produces keyword, skill, experience, leadership, domain, compatibility, and improvement analysis.
 - `services/api/app/services/ats_report_renderer.py`: Produces the downloadable ATS report artifact.
-- `services/api/app/ai`: Provider abstraction, structured output parsing, retry policy.
+- `services/api/app/ai`: Provider abstraction, OpenAI Responses API integration, structured output parsing, retry policy.
+- `services/api/app/services/ai_rewrite_validator.py`: Rejects unsupported model rewrites before they enter the resume.
 - `packages/schemas`: JSON Schema contracts shared by API, worker, and frontend.
 
 ## Key Design Decisions
@@ -39,6 +40,8 @@ flowchart LR
 - Source claims are first-class entities and are required for generated bullets.
 - Tailoring is a deterministic-plus-LLM pipeline, not a single prompt.
 - Scoring and validation happen outside the LLM.
+- GPT/OpenAI rewriting is optional and environment-controlled. If no API key is configured, deterministic rewriting is used.
+- Model output must be schema-constrained and post-validated before use.
 - Production PDF generation uses the source PDF as the master template and changes only approved text regions.
 - Generic HTML-to-PDF rendering is only acceptable for internal preview/debug output, not production resume export.
 - Template fidelity must be at least 99% before output is returned.
@@ -51,6 +54,16 @@ flowchart LR
 4. Validate all rewritten bullets against claim IDs.
 5. Reject bullets containing unsupported entities, dates, numbers, or skills.
 6. Store explainability metadata for every change.
+
+## OpenAI Rewrite Flow
+
+1. Parse source resume into claim IDs.
+2. Parse JD into keywords and responsibilities.
+3. Rank supported resume claims.
+4. Send only selected `allowed_claims`, supported JD keywords, and role expectations to OpenAI.
+5. Require structured JSON output using the bullet rewrite schema.
+6. Reject model output that changes source IDs, changes original text, adds unsupported JD keywords, invents numbers, or returns empty text.
+7. Fall back to deterministic polishing for rejected or unavailable rewrites.
 
 ## Template Preservation Guardrails
 

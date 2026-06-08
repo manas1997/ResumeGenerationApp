@@ -84,6 +84,7 @@ Template fidelity validation checks:
 - Resume preview and download workflow.
 - ATS analysis dashboard.
 - Skill improvement recommendations that do not modify resume content.
+- OpenAI/GPT-backed bullet rewriting with deterministic fallback.
 - Scorecard and explanations.
 - Version history.
 
@@ -148,3 +149,13 @@ The Skill Improvement Recommendations section must not alter the resume. It prov
 - Interview Preparation Areas.
 
 Safety rule: never say "You do not know X." Use wording like "The resume does not currently demonstrate experience with X" or "The Job Description places significant emphasis on X, but evidence of this skill is limited in the resume."
+
+## AI Rewrite Requirements
+
+GPT/OpenAI may rewrite text only within source-grounded boundaries:
+
+- It receives only approved source resume claims.
+- It must return structured JSON.
+- Every rewritten bullet must keep the original `source_claim_id`.
+- The system rejects rewrites that introduce unsupported JD keywords, new numbers, new skills, new tools, new dates, or empty text.
+- If the model fails or no API key is configured, the deterministic tailoring engine remains available.

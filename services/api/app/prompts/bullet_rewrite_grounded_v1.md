@@ -10,4 +10,6 @@ Rules:
 - Improve action verbs and clarity while preserving factual meaning.
 - Preserve the original template. Do not suggest layout, font, color, section, margin, or spacing changes.
 - If text may overflow the original text box, shorten or remove lower-priority content instead of changing layout.
+- Prefer concise ATS-friendly phrasing over keyword stuffing.
+- Return each rewrite with the original source claim ID and the exact original text.
 - Return only schema-valid JSON.

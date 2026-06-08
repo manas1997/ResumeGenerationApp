@@ -24,11 +24,14 @@ API:
 
 ```bash
 cd services/api
-python -m venv .venv
+python3.12 -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev]"
+export RESUME_APP_OPENAI_API_KEY="your-api-key"
 uvicorn app.main:app --reload
 ```
+
+AI rewriting is optional at runtime. Without `RESUME_APP_OPENAI_API_KEY`, the API uses the deterministic tailoring fallback. With the key set, the backend calls OpenAI through the AI gateway and validates every model rewrite before accepting it.
 
 Web:
 
@@ -37,4 +40,3 @@ cd apps/web
 npm install
 npm run dev
 ```
-
