@@ -5,12 +5,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: "#17201b",
-        paper: "#fbfbf8",
-        line: "#d8ddd4",
-        pine: "#1f6f5b",
-        cobalt: "#2453a6",
-        coral: "#b9533f"
+        ink: "#e0f2fe",
+        paper: "#0f172a",
+        line: "#1e3a5f",
+        pine: "#22d3ee",
+        cobalt: "#818cf8",
+        coral: "#fb7185"
       }
     }
   },
@@ -18,4 +18,3 @@ const config: Config = {
 };
 
 export default config;
-
